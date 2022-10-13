@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="#fff "
+    android:orientation="vertical"
+    android:layout_width="370dp"
+    android:layout_height="wrap_content">
+
+    <!-- 타이틀바 -->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        >
+        <TextView
+            android:text="시간"
+            android:textSize="20sp"
+            android:textColor="#2e7596"
+            android:gravity="left"
+            android:background=" #fff "
+            android:layout_width="match_parent"
+            android:layout_height="53dp" />
+    </LinearLayout>
+    <!-- //end 타이틀바 -->
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_gravity="center"
+    android:layout_margin="20dp"
+    >
+    <NumberPicker
+        android:id="@+id/number_picker_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp"
+        android:textSize="40sp"
+        android:theme="@style/numberPickerCustomSize"
+        android:layout_marginRight="20px"
+        android:selectionDividerHeight="0dp"
+        ></NumberPicker>
+    <NumberPicker
+        android:id="@+id/number_picker_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp"
+        android:textSize="30sp"
+        android:theme="@style/numberPickerCustomSize"
+        android:layout_marginRight="20px"
+        android:selectionDividerHeight="0dp"
+        ></NumberPicker>
+    <NumberPicker
+        android:id="@+id/number_picker_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp"
+        android:textSize="30sp"
+        android:theme="@style/numberPickerCustomSize"
+        android:layout_marginRight="20px"
+        android:selectionDividerHeight="0dp"
+        ></NumberPicker>
+    <TextView
+        android:fontFamily="@font/welcomebold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp"
+        android:textSize="30sp"
+        android:textColor="#2e7596"
+        android:text="ml"
+        ></TextView>
+
+</LinearLayout>
+
+
+    <!-- 닫기 버튼 -->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:text="확인"
+            android:fontFamily="@font/welcomebold"
+            android:id="@+id/OKbutton"
+            android:textSize="20dp"
+            android:textColor="#2e7596"
+            android:gravity="center"
+            android:background="#0000"
+            android:layout_width="match_parent"
+            android:layout_height="53dp"
+            android:onClick="mOnClose"
+            />
+    </LinearLayout>
+    <!--// 닫기 버튼 -->
+</LinearLayout>
