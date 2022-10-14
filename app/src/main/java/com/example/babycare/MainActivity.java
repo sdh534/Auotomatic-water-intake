@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(mRecyclerAdapter);
         mRecyclerAdapter.setDataList(mDataItems);
-
+        RecyclerView_Update();
     }
 
     private void init() {
@@ -190,12 +190,9 @@ public class MainActivity extends AppCompatActivity {
                 String date = DTvalue[0];
                 String time = DTvalue[1];
                 insert(date, time, 1, intent_data);
+                RecyclerView_Update();
 
 
-
-                mDataItems.add(new DataItem(getTime,manual_Data+"ml"));
-                mRecyclerAdapter.notifyItemInserted(mDataItems.size());
-                mRecyclerAdapter.notifyDataSetChanged();
 
 
 
@@ -246,16 +243,36 @@ void delete(String time) {
     void insert (String date, String time, int category, String value) {
         ContentValues values = new ContentValues();
         // 키,값의 쌍으로 데이터 입력
-        //시간 데이터 넘기기
-
-
-        values.put("date", date);
-        values.put("time", time);
-        values.put("category", category);
-        values.put("value", value);
+        values.put("date", date); //Text
+        values.put("time", time); //Text
+        values.put("category", category); //Integer
+        values.put("value", value); //Text
         long result = db.insert(tableName, null, values);
         Log.d(tag, result + "번째 row insert 성공했음");
         select(); // insert 후에 select 하도록
+    }
+
+    void RecyclerView_Update(){
+
+        Cursor c = db.query(tableName, null, null, null, null, null, null);
+        ArrayList<DataItem> mDataList = new ArrayList<>();
+        while(c.moveToNext()) {
+            int _id = c.getInt(0);
+            String date_db = c.getString(1);
+            String time_db = c.getString(2);
+            int category = c.getInt(3);
+            String value = c.getString(4);
+
+            Log.d(tag,"_id:"+_id+",date:"+date_db
+                    +",time:"+time_db+",category:"+category +",value:"+value);
+
+
+            mDataItems.add(new DataItem(date_db+" "+time_db,value+"ml"));
+        }
+        c.close();
+        mRecyclerAdapter.notifyItemInserted(mDataItems.size());
+        mRecyclerAdapter.notifyDataSetChanged();
+
     }
 
 
