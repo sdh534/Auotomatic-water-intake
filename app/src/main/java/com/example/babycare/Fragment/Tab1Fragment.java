@@ -32,6 +32,8 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 public class Tab1Fragment extends Fragment {
+
+    // 통계뷰!!
     View v;
     LineChart lineChart;
 

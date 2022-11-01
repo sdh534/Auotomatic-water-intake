@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //나중에 여기 프래그먼트 구현해야함
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main2);
         DebugDB.getAddressLog();
         transaction = fragmentManager.beginTransaction();
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
@@ -129,14 +129,14 @@ public class MainActivity extends AppCompatActivity{
         recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
 
 
-        //수동 입력 버튼
-        btn_manualplus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivityForResult(intent,1);
-
-            }
-        });
+//        //수동 입력 버튼
+//        btn_manualplus.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                startActivityForResult(intent,1);
+//
+//            }
+//        });
 
 
 
@@ -155,10 +155,10 @@ public class MainActivity extends AppCompatActivity{
         }
 
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(mRecyclerAdapter);
-        mRecyclerAdapter.setDataList(mDataItems);
-        RecyclerView_Update();
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        recyclerView.setAdapter(mRecyclerAdapter);
+//        mRecyclerAdapter.setDataList(mDataItems);
+//        RecyclerView_Update();
 
 //--------------------------------------------------------------------------------------------------------
         //블루투스 활성화
