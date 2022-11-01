@@ -10,6 +10,9 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -34,11 +37,14 @@ import com.example.babycare.Fragment.Tab1Fragment;
 import com.example.babycare.Fragment.Tab2Fragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Set;
 import java.util.TimeZone;
 
 public class MainActivity extends AppCompatActivity{
@@ -68,6 +74,24 @@ public class MainActivity extends AppCompatActivity{
     private RecyclerView recyclerView;
 
     private FragmentManager fragmentManager = getSupportFragmentManager();
+    //--------------------------------------------------------------------------------------------------------
+    //블루투스용 변수 선언
+
+    private static final int REQUEST_ENABLE_BT = 10; // 블루투스 활성화 상태
+    private BluetoothAdapter bluetoothAdapter; // 블루투스 어댑터
+    private Set<BluetoothDevice> devices; // 블루투스 디바이스 데이터 셋
+    private BluetoothDevice bluetoothDevice; // 블루투스 디바이스
+    private BluetoothSocket bluetoothSocket = null; //블루투스 소켓
+    private OutputStream outputStream = null; //블루투스에 데이터를 출력하기 위한 출력 스트림
+    private InputStream inputStream = null; //블루투스에 데이터를 입력하기 위한 입력 스트림
+    private Thread workerThread = null; //문자열 수신에 사용되는 쓰레드
+    private byte[] readBuffer; //수신된 문자열 저장 버퍼
+    private int readBufferPosition; //버퍼  내 문자 저장 위치
+
+    boolean connect_status;
+    int pairedDeviceCount; //페어링 된 기기의 크기를 저장할 변수
+    String[] array = {"0"};
+    //--------------------------------------------------------------------------------------------------------
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,6 +150,8 @@ public class MainActivity extends AppCompatActivity{
         recyclerView.setAdapter(mRecyclerAdapter);
         mRecyclerAdapter.setDataList(mDataItems);
         RecyclerView_Update();
+
+
 
 
     }
@@ -228,7 +254,7 @@ void delete(String time) {
     select(); // delete 후에 select 하도록
 }
 
-    void update (String name, int age, String address) {
+void update (String name, int age, String address) {
         ContentValues values = new ContentValues();
         values.put("age", age);         // 바꿀값
         values.put("address", address); // 바꿀값
@@ -291,6 +317,12 @@ void delete(String time) {
         mRecyclerAdapter.notifyDataSetChanged();
 
     }
+
+
+//--------------------------------------------------------------------------------------------------------
+// 블루투스 구문 - 블루투스 연결 및 값 받아오기
+// 블루투스 - 탐색 코드
+
 
 
     }
