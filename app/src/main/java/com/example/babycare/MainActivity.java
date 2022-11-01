@@ -41,7 +41,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
     //SQLite DB저장
     String dbName = "bb_file2.db";
     int dbVersion = 3;
@@ -67,14 +67,22 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
 
+    private FragmentManager fragmentManager = getSupportFragmentManager();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //나중에 여기 프래그먼트 구현해야함
         setContentView(R.layout.activity_main);
         DebugDB.getAddressLog();
+        transaction = fragmentManager.beginTransaction();
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setOnItemSelectedListener(new TabSelectedListener());
         //액션바 숨기기
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
+
+
 
         //변수 id - xml 일치
         btn_manualplus = (ImageButton) findViewById(R.id.btn_manualplus);
@@ -87,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
 
+
         //수동 입력 버튼
         btn_manualplus.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,6 +104,8 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+
 
         helper = new MySQLiteOpenHelper(
                 this,  // 현재 화면의 제어권자
@@ -110,52 +121,55 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
 
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(mRecyclerAdapter);
         mRecyclerAdapter.setDataList(mDataItems);
         RecyclerView_Update();
+
+
     }
+
 
     private void init() {
         btm_ly = findViewById(R.id.btm_ly);
-        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+
+
     }
 //--------------------------------------------------------------------------------------------------------
     //클릭하면 버튼바뀜
-    private void SettingListener() {
-        //선택 리스너 등록
-        bottomNavigationView.setOnNavigationItemSelectedListener(new TabSelectedListener());
-    }
+
         // 하단 메뉴바
-    class TabSelectedListener implements BottomNavigationView.OnNavigationItemSelectedListener{
+    class TabSelectedListener implements BottomNavigationView.OnItemSelectedListener{
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
             switch (menuItem.getItemId()) {
                 case R.id.tab_home: {
-
+                    Log.d("tag", "왜 안되는지..");
                     getSupportFragmentManager().beginTransaction()
-
-                            .replace(R.id.btm_ly, new HomeFragment())
+                            .replace(R.id.II_Fragment, new HomeFragment())
                             .commit();
-
                     return true;
+
                 }
                 case R.id.tab_statics: {
+                    Log.d("tag", "돼야하는디 ");
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.btm_ly, new Tab1Fragment())
+                            .replace(R.id.II_Fragment, new Tab1Fragment())
                             .commit();
                     return true;
                 }
                 case R.id.tab_timer: {
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.btm_ly, new Tab2Fragment())
+                            .replace(R.id.II_Fragment, new Tab2Fragment())
                             .commit();
                     return true;
                 }
                 case R.id.tab_settings: {
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.btm_ly, new SettingFragment())
+                            .replace(R.id.II_Fragment, new SettingFragment())
                             .commit();
                     return true;
                 }
@@ -164,6 +178,9 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
     }
+
+
+
 //--------------------------------------------------------------------------------------------------------
 // 수동 입력 구현
     @Override
