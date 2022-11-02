@@ -44,7 +44,6 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        DebugDB.getAddressLog();
         ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.home_timeline,container,false);
 
         mRecyclerAdapter = new mRecyclerAdapter();
@@ -63,13 +62,20 @@ public class HomeFragment extends Fragment {
 
 
         //메인액티비티에서 값받아오기
-        Bundle extra = this.getArguments();
+        Bundle extra = getArguments();
         if(extra!=null){
-            extra=getArguments();
+            Log.e(tag,"데이터 입력 완료");
+
             String data_water = extra.getString("water_data");
             String data_time = extra.getString("time_data");
-            mDataItems.add(new DataItem(data_time,data_water));
-            mRecyclerAdapter.notifyItemInserted(0);
+            String data_date = extra.getString("date_data");
+            mDataItems.add(new DataItem(data_time,data_water+"ml"));
+            insert(data_date,data_time,1,data_water);
+            Log.d(tag,"date:"+data_date
+                    +",time:"+data_time+",value:"+data_water);
+
+            mRecyclerAdapter.notifyItemInserted(mDataItems.size());
+            mRecyclerAdapter.notifyDataSetChanged();
         }
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
 
@@ -80,7 +86,8 @@ public class HomeFragment extends Fragment {
         return rootView;
     }
 
-
+//--------------------------------------------------------------------------------------------------------
+//삽입 갱신 구문
     void update (String name, int age, String address) {
         ContentValues values = new ContentValues();
         values.put("age", age);         // 바꿀값
@@ -109,6 +116,19 @@ public class HomeFragment extends Fragment {
 
         }
     }
+
+    void insert (String date, String time, int category, String value) {
+        ContentValues values = new ContentValues();
+        // 키,값의 쌍으로 데이터 입력
+        values.put("date", date); //Text
+        values.put("time", time); //Text
+        values.put("category", category); //Integer
+        values.put("value", value); //Text
+        long result = db.insert(tableName, null, values);
+        Log.d(tag, result + "번째 row insert 성공했음");
+        select(); // insert 후에 select 하도록
+    }
+//--------------------------------------------------------------------------------------------------------
 
     void RecyclerView_Update(){
 

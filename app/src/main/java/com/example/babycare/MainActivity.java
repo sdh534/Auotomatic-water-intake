@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity{
     private SQLiteDatabase db;
     String tag = "SQLite"; // Log의 tag 로 사용
     String tableName = "babycare"; // DB의 table 명
+    String bt_value;
 
     //BottomNavigationView
     LinearLayout btm_ly;
@@ -83,6 +84,7 @@ public class MainActivity extends AppCompatActivity{
     private ArrayList mDataItems;
     private HomeFragment HomeFragment;
     private FragmentTransaction transaction;
+
 
     private RecyclerView recyclerView;
 
@@ -432,7 +434,7 @@ void update (String name, int age, String address) {
             //뒤로가기 버튼 누를때 창이 안닫히도록 설정
             builder.setCancelable(false);
             AlertDialog alertDialog = builder.create();
-            alertDialog.show();
+            alertDialog.show(); //오류나는데 작동은 됨???
         }
 
     }
@@ -461,6 +463,7 @@ void update (String name, int age, String address) {
             outputStream = bluetoothSocket.getOutputStream();
             inputStream = bluetoothSocket.getInputStream();
             receiveData();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -504,8 +507,29 @@ void update (String name, int age, String address) {
                                     handler.post(new Runnable() {
                                         @Override
                                         public void run() {
-
                                             array = text.split(",", 2);
+                                            bt_value=array[0];
+                                            Toast.makeText(getApplicationContext(), "섭취량: "+bt_value+ "ml", Toast.LENGTH_SHORT).show();
+
+                                            HomeFragment HomeFragment = new HomeFragment();
+                                            Bundle bundle = new Bundle(1);
+
+                                            tz= TimeZone.getTimeZone("Asia/Seoul");
+
+                                            DateFormat SimpleDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.KOREA);
+                                            SimpleDate.setTimeZone(tz);
+                                            Date mDate= new Date();
+                                            String getTime = SimpleDate.format(mDate);
+
+                                            String[] DTvalue = getTime.split(" ");
+                                            String date = DTvalue[0];
+                                            String time = DTvalue[1];
+                                            bundle.putString("water_data",bt_value);
+                                            bundle.putString("date_data",date);
+                                            bundle.putString("time_data",time);
+                                            insert(date,time,1,bt_value);
+                                            HomeFragment.setArguments(bundle);
+
                                         }
                                     });
                                 } // 개행문자가 아닐경우
