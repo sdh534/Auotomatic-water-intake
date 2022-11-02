@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -44,6 +45,9 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
+
+
+
         ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.home_timeline,container,false);
 
         mRecyclerAdapter = new mRecyclerAdapter();
@@ -65,22 +69,23 @@ public class HomeFragment extends Fragment {
         Bundle extra = getArguments();
         if(extra!=null){
             Log.e(tag,"데이터 입력 완료");
+            String str = extra.getString("key");
+            if(str=="true"){
+                mRecyclerAdapter.notifyItemInserted(mDataItems.size());
+                mRecyclerAdapter.notifyDataSetChanged();
 
-            String data_water = extra.getString("water_data");
-            String data_time = extra.getString("time_data");
-            String data_date = extra.getString("date_data");
-            mDataItems.add(new DataItem(data_time,data_water+"ml"));
-            insert(data_date,data_time,1,data_water);
-            Log.d(tag,"date:"+data_date
-                    +",time:"+data_time+",value:"+data_water);
+            }
 
-            mRecyclerAdapter.notifyItemInserted(mDataItems.size());
-            mRecyclerAdapter.notifyDataSetChanged();
+
         }
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(mRecyclerAdapter);
+
+
+
+
         mRecyclerAdapter.setDataList(mDataItems);
         RecyclerView_Update();
         return rootView;

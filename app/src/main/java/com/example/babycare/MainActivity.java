@@ -524,11 +524,16 @@ void update (String name, int age, String address) {
                                             String[] DTvalue = getTime.split(" ");
                                             String date = DTvalue[0];
                                             String time = DTvalue[1];
-                                            bundle.putString("water_data",bt_value);
-                                            bundle.putString("date_data",date);
-                                            bundle.putString("time_data",time);
+
+                                            bundle.putString("key","true");
                                             insert(date,time,1,bt_value);
-                                            HomeFragment.setArguments(bundle);
+
+                                            HomeFragment f2 = new HomeFragment();
+                                            FragmentTransaction transaction =
+                                                    getSupportFragmentManager().beginTransaction();
+                                            transaction.replace(R.id.II_Fragment, f2);
+                                            transaction.addToBackStack(null);
+                                            transaction.commit();
 
                                         }
                                     });
@@ -564,6 +569,8 @@ void update (String name, int age, String address) {
             e.printStackTrace();
         }
     }
+
+
 
 
 }
