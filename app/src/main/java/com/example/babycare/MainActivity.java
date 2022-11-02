@@ -5,21 +5,25 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -101,6 +105,59 @@ public class MainActivity extends AppCompatActivity{
     int pairedDeviceCount; //페어링 된 기기의 크기를 저장할 변수
     String[] array = {"0"};
     //--------------------------------------------------------------------------------------------------------
+    private static String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS,
+            Manifest.permission.BLUETOOTH_SCAN,
+            Manifest.permission.BLUETOOTH_CONNECT,
+            Manifest.permission.BLUETOOTH_PRIVILEGED
+    };
+    private static String[] PERMISSIONS_LOCATION = {
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS,
+            Manifest.permission.BLUETOOTH_SCAN,
+            Manifest.permission.BLUETOOTH_CONNECT,
+            Manifest.permission.BLUETOOTH_PRIVILEGED
+    };
+
+    //--------------------------------------------------------------------------------------------------------
+// 수동 입력 구현
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==1){
+            if(resultCode==RESULT_OK){
+
+
+                //데이터 받기
+                String intent_data = data.getStringExtra("waterdata");
+                System.out.println(intent_data);
+
+                int manual_Data = Integer.parseInt(intent_data);
+
+
+                DateFormat SimpleDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.KOREA);
+                tz= TimeZone.getTimeZone("Asia/Seoul");
+                SimpleDate.setTimeZone(tz);
+                Date mDate= new Date();
+                String getTime = SimpleDate.format(mDate);
+
+                String[] DTvalue = getTime.split(" ");
+                String date = DTvalue[0];
+                String time = DTvalue[1];
+                insert(date, time, 1, intent_data);
+                RecyclerView_Update();
+
+
+
+            }
+
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -163,16 +220,15 @@ public class MainActivity extends AppCompatActivity{
 //--------------------------------------------------------------------------------------------------------
         //블루투스 활성화
         String deviceName = null;
-
-        //블루투스 활성화 코드
+        checkPermissions();
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter(); //블루투스 어댑터를 디폴트 어댑터로 설정
-
         if (bluetoothAdapter == null) { //기기가 블루투스를 지원하지 않을때
             Toast.makeText(getApplicationContext(), "Bluetooth 미지원 기기입니다.", Toast.LENGTH_SHORT).show();
             //처리코드 작성
         } else { // 기기가 블루투스를 지원할 때
             if (bluetoothAdapter.isEnabled()) { // 기기의 블루투스 기능이 켜져있을 경우
                 selectBluetoothDevice(); // 블루투스 디바이스 선택 함수 호출
+                Log.d("tag", "w제ㅐ발씨발..");
             } else { // 기기의 블루투스 기능이 꺼져있을 경우
                 // 블루투스를 활성화 하기 위한 대화상자 출력
                 Intent intent2 = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
@@ -183,8 +239,32 @@ public class MainActivity extends AppCompatActivity{
 
         }
 
+//--------------------------------------------------------------------------------------------------------
+
+
+
+
 
     }
+    private void checkPermissions(){
+        int permission1 = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int permission2 = ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN);
+        if (permission1 != PackageManager.PERMISSION_GRANTED) {
+            // We don't have permission so prompt the user
+            ActivityCompat.requestPermissions(
+                    this,
+                    PERMISSIONS_STORAGE,
+                    1
+            );
+        } else if (permission2 != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(
+                    this,
+                    PERMISSIONS_LOCATION,
+                    1
+            );
+        }
+    };
+
 
 
     private void init() {
@@ -236,45 +316,6 @@ public class MainActivity extends AppCompatActivity{
     }
 
 
-
-//--------------------------------------------------------------------------------------------------------
-// 수동 입력 구현
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==1){
-            if(resultCode==RESULT_OK){
-
-
-                //데이터 받기
-                String intent_data = data.getStringExtra("waterdata");
-                System.out.println(intent_data);
-
-                int manual_Data = Integer.parseInt(intent_data);
-
-
-                DateFormat SimpleDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.KOREA);
-                tz= TimeZone.getTimeZone("Asia/Seoul");
-                SimpleDate.setTimeZone(tz);
-                Date mDate= new Date();
-                String getTime = SimpleDate.format(mDate);
-
-                String[] DTvalue = getTime.split(" ");
-                String date = DTvalue[0];
-                String time = DTvalue[1];
-                insert(date, time, 1, intent_data);
-                RecyclerView_Update();
-
-
-
-
-
-
-
-                }
-
-            }
-        }
 
 //--------------------------------------------------------------------------------------------------------
 // SQLite 구문 - 삽입, 삭제, 갱신, 선택
@@ -390,6 +431,8 @@ void update (String name, int age, String address) {
             });
             //뒤로가기 버튼 누를때 창이 안닫히도록 설정
             builder.setCancelable(false);
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
         }
 
     }
@@ -497,6 +540,7 @@ void update (String name, int age, String address) {
             e.printStackTrace();
         }
     }
+
 
 }
 
