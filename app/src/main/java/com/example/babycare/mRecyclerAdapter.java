@@ -39,7 +39,6 @@ public class mRecyclerAdapter extends RecyclerView.Adapter<mRecyclerAdapter.View
     }
 
 
-
     class ViewHolder extends RecyclerView.ViewHolder {
         TextView text_data;
         TextView text_time;

@@ -22,6 +22,7 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.google.android.material.tabs.TabLayout;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -32,6 +33,8 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 public class Tab1Fragment extends Fragment {
+
+    private ArrayList<Fragment> arrayList = new ArrayList<>();
 
     // 통계뷰!!
     View v;
@@ -65,6 +68,9 @@ public class Tab1Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_static, container, false);
+
+        TabLayout tabLayout = v.findViewById(R.id.tab_layout);
+
 
         lineChart = (LineChart) v.findViewById(R.id.chart);
         lineChart.setDrawGridBackground(false); //격자 구조

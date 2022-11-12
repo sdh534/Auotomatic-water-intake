@@ -1,5 +1,6 @@
 package com.example.babycare.Fragment;
 
+import android.content.ClipData;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -15,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,9 +26,16 @@ import com.example.babycare.MySQLiteOpenHelper;
 import com.example.babycare.R;
 import com.example.babycare.mRecyclerAdapter;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class HomeFragment extends Fragment {
+
+
 
     private RecyclerView recyclerView;
     private mRecyclerAdapter mRecyclerAdapter;
@@ -47,9 +56,9 @@ public class HomeFragment extends Fragment {
 
 
 
-
         ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.home_timeline,container,false);
 
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
         mRecyclerAdapter = new mRecyclerAdapter();
         mDataItems = new ArrayList<>();
 
@@ -78,13 +87,13 @@ public class HomeFragment extends Fragment {
 
 
         }
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(mRecyclerAdapter);
 
 
-
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
 
         mRecyclerAdapter.setDataList(mDataItems);
         RecyclerView_Update();
@@ -133,6 +142,12 @@ public class HomeFragment extends Fragment {
         Log.d(tag, result + "번째 row insert 성공했음");
         select(); // insert 후에 select 하도록
     }
+
+    void delete(String time) {
+        int result = db.delete(tableName, "time = ?", new String[] {time});
+        Log.d(tag, result + "개 row delete 성공");
+        select(); // delete 후에 select 하도록
+    }
 //--------------------------------------------------------------------------------------------------------
 
     void RecyclerView_Update(){
@@ -157,5 +172,30 @@ public class HomeFragment extends Fragment {
         mRecyclerAdapter.notifyDataSetChanged();
 
     }
+
+
+
+    ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT|ItemTouchHelper.RIGHT) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return true;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+        final int position = viewHolder.getAdapterPosition();
+
+
+        ArrayList<DataItem> mDataList = mDataItems;
+        String[] DTtime = mDataList.get (position).getData_time().split(" ");
+        String time = DTtime[1];
+
+        Log.d(tag,"position: "+ position + "/ time: " +time + "/DTtime: "+DTtime);
+        delete(time);
+        mDataItems.remove(position);
+        mRecyclerAdapter.notifyItemRemoved(position);
+        mRecyclerAdapter.notifyDataSetChanged();
+        }
+    };
 
 }

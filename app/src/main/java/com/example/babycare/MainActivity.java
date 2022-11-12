@@ -321,11 +321,7 @@ public class MainActivity extends AppCompatActivity{
 
 //--------------------------------------------------------------------------------------------------------
 // SQLite 구문 - 삽입, 삭제, 갱신, 선택
-void delete(String time) {
-    int result = db.delete(tableName, "time=?", new String[] {time});
-    Log.d(tag, result + "개 row delete 성공");
-    select(); // delete 후에 select 하도록
-}
+
 
 void update (String name, int age, String address) {
         ContentValues values = new ContentValues();
