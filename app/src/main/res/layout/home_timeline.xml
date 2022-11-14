@@ -45,7 +45,24 @@
         android:clipToPadding="false"
         tools:listitem="@layout/item_timeline"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
-
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        >
+        <ImageButton
+            android:layout_margin="5dp"
+            android:id="@+id/btn_plus"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:background="@drawable/ripple_button2"
+            ></ImageButton>
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"
@@ -54,5 +71,5 @@
         android:layout_marginTop="?actionBarSize"
         android:background="@drawable/dropshadow"/>
 
-
+    </RelativeLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

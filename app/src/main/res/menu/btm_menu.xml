@@ -17,7 +17,7 @@
         android:enabled="true"
         android:icon="@drawable/ic_baseline_access_time_24"
         android:fontFamily="@font/welcomebold"
-        android:title="타이머" />
+        android:title="일과" />
     <item
         android:id="@+id/tab_settings"
         android:enabled="true"

@@ -1,58 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="horizontal"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp">
+    android:orientation="vertical">
 
-    <com.github.vipulasri.timelineview.TimelineView
-        android:id="@+id/timeline"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        app:markerSize="20dp"
-        app:lineWidth="3dp"
-        app:startLineColor="@color/colorAccent"
-        app:endLineColor="@color/colorAccent"
-        app:lineStyle="dash"/>
-
-    <com.google.android.material.card.MaterialCardView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="15dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="5dp"
-        android:layout_gravity="center_vertical"
-        app:cardBackgroundColor="@color/colorGrey50"
-        app:contentPadding="15dp">
-
+        android:gravity="center_vertical"
+        android:padding="20dp">
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/text_timeline_date"
-                android:textSize="12sp"
-                tools:text="24 JAN"/>
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:id="@+id/text_timeline_title"
-                android:textColor="@android:color/black"
-                tools:text="Order Successfully Completed"/>
+            android:orientation="horizontal">
 
         </LinearLayout>
 
-    </com.google.android.material.card.MaterialCardView>
+        <!--카테고리 사진-->
+        <ImageView
+            android:id="@+id/category_image"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/feed"/>
+
+        <!--카테고리 이름-->
+        <TextView
+            android:id="@+id/category_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:text="섭취량"
+            android:textSize="20sp"
+            android:textColor="#000"/>
+
+        <!--카테고리 실제 값-->
+        <TextView
+            android:id="@+id/category_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:text="섭취량"
+            android:textSize="15sp"
+            android:textColor="#5b5b5b"/>
+        <!--시간-->
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:text="시간"
+            android:textSize="12sp"
+            android:textColor="#5b5b5b"
+            android:maxLines="1"/>
+
+    </LinearLayout>
+
+    <!--구분선-->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="10dp"
+        android:background="#aaa"/>
 
 </LinearLayout>

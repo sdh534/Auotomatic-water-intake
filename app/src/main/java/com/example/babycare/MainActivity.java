@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity{
     //TimeZone설정
     TimeZone tz;
 
-    private ImageButton btn_manualplus;
+
     private TextView text_data;
     private RecyclerView mRecyclerView;
     private com.example.babycare.mRecyclerAdapter mRecyclerAdapter;
@@ -106,6 +106,9 @@ public class MainActivity extends AppCompatActivity{
     boolean connect_status;
     int pairedDeviceCount; //페어링 된 기기의 크기를 저장할 변수
     String[] array = {"0"};
+
+    public String date;
+
     //--------------------------------------------------------------------------------------------------------
     private static String[] PERMISSIONS_STORAGE = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -128,38 +131,7 @@ public class MainActivity extends AppCompatActivity{
 
     //--------------------------------------------------------------------------------------------------------
 // 수동 입력 구현
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==1){
-            if(resultCode==RESULT_OK){
 
-
-                //데이터 받기
-                String intent_data = data.getStringExtra("waterdata");
-                System.out.println(intent_data);
-
-                int manual_Data = Integer.parseInt(intent_data);
-
-
-                DateFormat SimpleDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.KOREA);
-                tz= TimeZone.getTimeZone("Asia/Seoul");
-                SimpleDate.setTimeZone(tz);
-                Date mDate= new Date();
-                String getTime = SimpleDate.format(mDate);
-
-                String[] DTvalue = getTime.split(" ");
-                String date = DTvalue[0];
-                String time = DTvalue[1];
-                insert(date, time, 1, intent_data);
-                RecyclerView_Update();
-
-
-
-            }
-
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,10 +149,8 @@ public class MainActivity extends AppCompatActivity{
 
 
         //변수 id - xml 일치
-        btn_manualplus = (ImageButton) findViewById(R.id.btn_manualplus);
         //인텐트 변수
-        Intent intent = new Intent(this, Manual_Plus.class);
-        Intent data = getIntent();
+
 
         mRecyclerAdapter = new mRecyclerAdapter();
         mDataItems = new ArrayList<>();
@@ -230,7 +200,7 @@ public class MainActivity extends AppCompatActivity{
         } else { // 기기가 블루투스를 지원할 때
             if (bluetoothAdapter.isEnabled()) { // 기기의 블루투스 기능이 켜져있을 경우
                 selectBluetoothDevice(); // 블루투스 디바이스 선택 함수 호출
-                Log.d("tag", "w제ㅐ발씨발..");
+                Log.d("tag", "블루투스 선택");
             } else { // 기기의 블루투스 기능이 꺼져있을 경우
                 // 블루투스를 활성화 하기 위한 대화상자 출력
                 Intent intent2 = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
@@ -285,7 +255,6 @@ public class MainActivity extends AppCompatActivity{
 
             switch (menuItem.getItemId()) {
                 case R.id.tab_home: {
-                    Log.d("tag", "왜 안되는지..");
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.II_Fragment, new HomeFragment())
                             .commit();
@@ -293,7 +262,6 @@ public class MainActivity extends AppCompatActivity{
 
                 }
                 case R.id.tab_statics: {
-                    Log.d("tag", "돼야하는디 ");
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.II_Fragment, new Tab1Fragment())
                             .commit();
@@ -352,7 +320,7 @@ void update (String name, int age, String address) {
         }
     }
 
-    void insert (String date, String time, int category, String value) {
+    public void insert (String date, String time, int category, String value) {
         ContentValues values = new ContentValues();
         // 키,값의 쌍으로 데이터 입력
         values.put("date", date); //Text
@@ -364,7 +332,7 @@ void update (String name, int age, String address) {
         select(); // insert 후에 select 하도록
     }
 
-    void RecyclerView_Update(){
+    public void RecyclerView_Update(){
 
         Cursor c = db.query(tableName, null, null, null, null, null, null);
         ArrayList<DataItem> mDataList = new ArrayList<>();

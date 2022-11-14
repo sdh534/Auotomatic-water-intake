@@ -29,11 +29,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".Manual_Plus"
-            android:exported="true"
-            android:theme="@style/Theme.MyDialog"
-            >
-        </activity>
+
 
     </application>
 

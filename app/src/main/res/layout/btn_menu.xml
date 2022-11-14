@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/edit_round_black"
+
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+    <!--    // 상단 고정-->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="56dp"
+        >
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            >
+            //수면버튼
+            <LinearLayout
+                android:layout_width="170dp"
+                android:layout_height="80dp"
+                android:orientation="horizontal"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:textSize="25sp"
+                    android:fontFamily="@font/nanumsquareextrabold"
+                    android:text="수면"
+                    android:textColor="#FFFFFF"
+                    >
+                </TextView>
+                <ImageButton
+                    android:layout_margin="5dp"
+                    android:id="@+id/btn_sleep"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:background="@drawable/plus_sleep"
+                    ></ImageButton></LinearLayout>
+            //배변버튼
+            <LinearLayout
+                android:layout_width="170dp"
+                android:layout_height="80dp"
+                android:orientation="horizontal"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:textSize="25sp"
+                    android:fontFamily="@font/nanumsquareextrabold"
+                    android:text="배변"
+                    android:textColor="#FFFFFF"
+                    >
+                </TextView>
+                <ImageButton
+                    android:layout_margin="5dp"
+                    android:id="@+id/btn_toilet"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:background="@drawable/plus_toilet"
+                    ></ImageButton></LinearLayout>
+            //수유버튼
+            <LinearLayout
+                android:layout_width="170dp"
+                android:layout_height="80dp"
+                android:orientation="horizontal"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:textSize="25sp"
+                    android:fontFamily="@font/nanumsquareextrabold"
+                    android:text="수유"
+                    android:textColor="#FFFFFF"
+                    >
+                </TextView>
+                <ImageButton
+                    android:layout_margin="5dp"
+                    android:id="@+id/btn_water"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:background="@drawable/plus_manual"
+                    ></ImageButton></LinearLayout>
+            //닫기버튼
+        <LinearLayout
+            android:layout_width="170dp"
+            android:layout_height="80dp"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:textSize="20sp"
+                android:fontFamily="@font/nanumsquareextrabold"
+                android:text=" "
+                >
+            </TextView>
+            <ImageButton
+                android:layout_margin="5dp"
+                android:id="@+id/btn_close"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:background="@drawable/ripple_button3"
+                ></ImageButton></LinearLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>

@@ -1,7 +1,9 @@
 package com.example.babycare.Fragment;
 
+import android.app.Dialog;
 import android.content.ClipData;
 import android.content.ContentValues;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -14,14 +16,17 @@ import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.amitshekhar.DebugDB;
 import com.example.babycare.DataItem;
+import com.example.babycare.MainActivity;
 import com.example.babycare.MySQLiteOpenHelper;
 import com.example.babycare.R;
 import com.example.babycare.mRecyclerAdapter;
@@ -36,18 +41,19 @@ import java.util.TimeZone;
 public class HomeFragment extends Fragment {
 
 
-
+    private ImageButton btn;
     private RecyclerView recyclerView;
-    private mRecyclerAdapter mRecyclerAdapter;
+    public mRecyclerAdapter mRecyclerAdapter;
     private ArrayList mDataItems;
+    private Dialog dialog;
 
     //SQLite DB저장
     String dbName = "bb_file2.db";
     int dbVersion = 3;
     private MySQLiteOpenHelper helper;
-    private SQLiteDatabase db;
+    public SQLiteDatabase db;
     String tag = "SQLite"; // Log의 tag 로 사용
-    String tableName = "babycare"; // DB의 table 명
+    public String tableName = "babycare"; // DB의 table 명
 
     MySQLiteOpenHelper mySQLiteOpenHelper;
     @Nullable
@@ -57,7 +63,6 @@ public class HomeFragment extends Fragment {
 
 
         ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.home_timeline,container,false);
-
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
         mRecyclerAdapter = new mRecyclerAdapter();
         mDataItems = new ArrayList<>();
@@ -97,6 +102,21 @@ public class HomeFragment extends Fragment {
 
         mRecyclerAdapter.setDataList(mDataItems);
         RecyclerView_Update();
+
+
+        btn = (ImageButton) rootView.findViewById(R.id.btn_plus);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(tag, "두다다다다 버튼을 누르기 ");
+
+                    MyDialogFragment dialog = new MyDialogFragment();
+                    dialog.show(getActivity().getSupportFragmentManager(),"tag");
+
+                }
+
+        });
+
         return rootView;
     }
 
@@ -131,7 +151,7 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    void insert (String date, String time, int category, String value) {
+    public void insert (String date, String time, int category, String value) {
         ContentValues values = new ContentValues();
         // 키,값의 쌍으로 데이터 입력
         values.put("date", date); //Text
@@ -197,5 +217,6 @@ public class HomeFragment extends Fragment {
         mRecyclerAdapter.notifyDataSetChanged();
         }
     };
+
 
 }
