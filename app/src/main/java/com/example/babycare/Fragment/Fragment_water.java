@@ -78,13 +78,7 @@ public class Fragment_water extends DialogFragment{
             }
         });
 
-        /*
-         * DialogFragment를 종료시키려면? 물론 다이얼로그 바깥쪽을 터치하면 되지만
-         * 종료하기 버튼으로도 종료시킬 수 있어야겠죠?
-         */
-        // 먼저 부모 프래그먼트를 받아옵니다.
-        //findFragmentByTag안의 문자열 값은 Fragment1.java에서 있던 문자열과 같아야합니다.
-        //dialog.show(getActivity().getSupportFragmentManager(),"tag");
+
         fragment2 = getActivity().getSupportFragmentManager().findFragmentByTag("water");
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
@@ -116,7 +110,7 @@ public class Fragment_water extends DialogFragment{
                     dialogFragment.dismiss();
 
                     //프래그먼트 새로고침
-                   HomeFragment f2 = new HomeFragment();
+                    HomeFragment f2 = new HomeFragment();
                     FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
                     transaction.replace(R.id.II_Fragment, f2);
                     transaction.addToBackStack(null);
