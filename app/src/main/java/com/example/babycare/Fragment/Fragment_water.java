@@ -1,7 +1,5 @@
 package com.example.babycare.Fragment;
 
-import android.content.ContentValues;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -10,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.NumberPicker;
 
 import androidx.fragment.app.DialogFragment;
@@ -18,9 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.babycare.MainActivity;
-import com.example.babycare.MySQLiteOpenHelper;
 import com.example.babycare.R;
-import com.example.babycare.mRecyclerAdapter;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -105,7 +100,7 @@ public class Fragment_water extends DialogFragment{
                 TimeZone tz;
                 tz= TimeZone.getTimeZone("Asia/Seoul");
 
-                DateFormat SimpleDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.KOREA);
+                DateFormat SimpleDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
                 SimpleDate.setTimeZone(tz);
                 Date mDate= new Date();
                 String getTime = SimpleDate.format(mDate);

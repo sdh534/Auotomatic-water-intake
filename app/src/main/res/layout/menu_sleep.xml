@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/edit_round_black"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    >
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edit_round_white"
+        android:layout_alignParentBottom="true"
+        >
+        <!-- 타이틀바 -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <TextView
+                android:text="수면 기록"
+                android:textSize="20sp"
+                android:textColor="#2e7596"
+                android:gravity="center"
+                android:background=" #fff "
+                android:layout_width="match_parent"
+                android:layout_height="53dp" />
+        </LinearLayout>
+        <!-- //end 타이틀바 -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:layout_margin="20dp"
+            >
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_marginRight="30dp"
+                >
+                <ToggleButton
+                    android:id="@+id/btn_sleep"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:background="@drawable/sleep"
+                    android:textOff=" "
+                    android:textOn=" "
+                    >
+                </ToggleButton>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="수면 시작"
+                    android:textSize="17sp"
+                    android:layout_gravity="center"
+                    ></TextView>
+            </LinearLayout>
+            //둘다
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                >
+                <ToggleButton
+                    android:id="@+id/btn_wake"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:background="@drawable/wake"
+                    android:textOff=" "
+                    android:textOn=" "
+                    >
+                </ToggleButton>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="수면 종료"
+                    android:textSize="17sp"
+                    android:layout_gravity="center"
+                    ></TextView>
+            </LinearLayout>
+
+        </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="수면 시작 시간: "
+        android:id="@+id/text_start_sleep"
+        android:visibility="invisible"
+        >
+
+    </TextView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="수면 종료 시간: "
+            android:id="@+id/text_end_sleep"
+            android:visibility="invisible"
+            >
+
+        </TextView>
+    </LinearLayout>
+
+        <!-- 닫기 버튼 -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:text="확인"
+                android:fontFamily="@font/welcomebold"
+                android:id="@+id/OKbutton2"
+                android:textSize="20dp"
+                android:textColor="#2e7596"
+                android:gravity="center"
+                android:background="#0000"
+                android:layout_width="match_parent"
+                android:layout_height="53dp"
+                android:onClick="mOnClose"
+                />
+        </LinearLayout>
+        <!--// 닫기 버튼 -->
+    </LinearLayout>
+</RelativeLayout>

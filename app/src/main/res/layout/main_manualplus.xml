@@ -10,7 +10,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#fff "
+    android:background="@drawable/edit_round_white"
     android:layout_alignParentBottom="true"
     >
     <!-- 타이틀바 -->
@@ -19,11 +19,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >
+
         <TextView
-            android:text="시간"
+            android:text="수유 기록"
             android:textSize="20sp"
             android:textColor="#2e7596"
-            android:gravity="left"
+            android:gravity="center"
             android:background=" #fff "
             android:layout_width="match_parent"
             android:layout_height="53dp" />

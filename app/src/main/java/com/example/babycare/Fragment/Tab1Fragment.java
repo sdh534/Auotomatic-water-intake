@@ -39,6 +39,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
+///그래프 프래그먼트
 public class Tab1Fragment extends Fragment {
 
     private ArrayList<Fragment> arrayList = new ArrayList<>();
@@ -93,7 +94,7 @@ public class Tab1Fragment extends Fragment {
         String getTime = simpleDateFormat2.format(dt2);
         String[] DTvalue = getTime.split(" ");
         date = DTvalue[0];//일간 구현
-        cursor = db.rawQuery("SELECT * FROM babycare WHERE date = '"+date+"'", null);
+        cursor = db.rawQuery("SELECT * FROM babycare WHERE date = '"+date+"' AND category = 1", null);
         linechart(cursor,tab_number);
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -102,16 +103,21 @@ public class Tab1Fragment extends Fragment {
                 int pos = tab.getPosition();
                 if(pos ==0){
                     Log.d(tag,"일간:");
-                    cursor = db.rawQuery("SELECT * FROM babycare WHERE date = '"+date+"'", null);
+                    cursor = db.rawQuery("SELECT * FROM babycare WHERE date = '"+date+"' AND category = 1", null);
                     tab_number=0;
                     linechart(cursor,tab_number);
                 }
                 else if(pos ==1){
+                    //값 하나씩 밀림 이거 확인하기
                     Log.d(tag,"주간:");
                     Calendar week = Calendar.getInstance();
-                    week.add(Calendar.DATE, -7);
+                    week.add(Calendar.DATE, -6);
                     String beforeWeek = new java.text.SimpleDateFormat("yyyy-MM-dd").format(week.getTime());
-                    cursor = db.rawQuery("SELECT * FROM babycare WHERE date BETWEEN '"+beforeWeek+"' AND '"+date+"'", null);
+                    cursor = db.rawQuery(
+                            "SELECT date, SUM(value) " +
+                            "FROM babycare " +
+                            "WHERE  category = 1 AND date BETWEEN '"+beforeWeek+"' AND '"+date+"'" +
+                            "GROUP BY date", null);
                     tab_number=1;
                     linechart(cursor,tab_number);
                 }
@@ -121,7 +127,11 @@ public class Tab1Fragment extends Fragment {
                     String beforeMonth = new java.text.SimpleDateFormat("yyyy-MM-dd").format(month.getTime());
                     Log.d(tag,"월간:"+beforeMonth);
                     tab_number=2;
-                    cursor = db.rawQuery("SELECT * FROM babycare WHERE date BETWEEN '"+beforeMonth+"' AND '"+date+"'", null);
+                    cursor = db.rawQuery(
+                            "SELECT date, SUM(value) " +
+                                    "FROM babycare " +
+                                    "WHERE date BETWEEN '"+beforeMonth+"' AND '"+date+"'" +
+                                    "GROUP BY date", null);
                     linechart(cursor,tab_number);
                 }
             }
@@ -147,79 +157,11 @@ public class Tab1Fragment extends Fragment {
         lineChart.getDescription().setEnabled(false); //하단 description 표출 x
 
 
+
+         if(tab_num==0){
         entries.clear();
         xVals.clear();
         int i = 0;
-//        switch(tab_num){
-//            case 0:
-//            while (c.moveToNext()) {
-//                //string -> date 변환 (문자열을 파싱하려면 문자열 형태와 같은 DateTime 생성해줘야돼
-//                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss", Locale.KOREA);
-//                simpleDateFormat.setTimeZone(tz);
-//                Date dt = new Date();
-//                try {
-//                    dt = simpleDateFormat.parse(c.getString(2));
-//                } catch (ParseException e) {
-//                    e.printStackTrace();
-//                }
-//
-//
-//                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-//
-//                String heartFormat = sdf.format(dt);
-//
-//                entries.add(new Entry(i++, Float.parseFloat(c.getString(4)))); // 문자형을 실수로 변환 y축
-//                xVals.add(heartFormat); // 하나씩 받아와서 넣어줌 (X축 시간으로 나온게 이거 때문)
-//            }
-//                c.close();
-//            break;
-//            case 1:
-//                while (c.moveToNext()) {
-//                    //string -> date 변환 (문자열을 파싱하려면 문자열 형태와 같은 DateTime 생성해줘야돼
-//                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss", Locale.KOREA);
-//                    simpleDateFormat.setTimeZone(tz);
-//                    Date dt = new Date();
-//                    try {
-//                        dt = simpleDateFormat.parse(c.getString(2));
-//                    } catch (ParseException e) {
-//                        e.printStackTrace();
-//                    }
-//
-//
-//                    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-//
-//                    String heartFormat = sdf.format(dt);
-//
-//                    entries.add(new Entry(i++, Float.parseFloat(c.getString(4)))); // 문자형을 실수로 변환 y축
-//                    xVals.add(heartFormat); // 하나씩 받아와서 넣어줌 (X축 시간으로 나온게 이거 때문)
-//                }
-//                c.close();
-//                break;
-//            case 2:
-//                while (c.moveToNext()) {
-//                    Log.d(tag,"확인!!:");
-//                    //string -> date 변환 (문자열을 파싱하려면 문자열 형태와 같은 DateTime 생성해줘야돼
-//                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss", Locale.KOREA);
-//                    simpleDateFormat.setTimeZone(tz);
-//                    Date dt = new Date();
-//                    try {
-//                        dt = simpleDateFormat.parse(c.getString(2));
-//                    } catch (ParseException e) {
-//                        e.printStackTrace();
-//                    }
-//
-//
-//                    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-//
-//                    String heartFormat = sdf.format(dt);
-//
-//                    entries.add(new Entry(i++, Float.parseFloat(c.getString(4)))); // 문자형을 실수로 변환 y축
-//                    xVals.add(heartFormat); // 하나씩 받아와서 넣어줌 (X축 시간으로 나온게 이거 때문)
-//
-//                }
-//                c.close();
-//                break;
-//        }
 
          while (c.moveToNext()) {
              Log.d(tag,"확인!!:");
@@ -243,6 +185,36 @@ public class Tab1Fragment extends Fragment {
 
          }
 
+         }
+         else if(tab_num==1){
+            //날짜출력 완료
+             entries.clear();
+             xVals.clear();
+             int i = 0;
+
+             while (c.moveToNext()) {
+                 Log.d(tag,"확인!!:");
+                 //string -> date 변환 (문자열을 파싱하려면 문자열 형태와 같은 DateTime 생성해줘야돼
+                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+                // SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss", Locale.KOREA);
+                 simpleDateFormat.setTimeZone(tz);
+                 Date dt = new Date();
+                 try {
+                     dt = simpleDateFormat.parse(c.getString(0));
+                 } catch (ParseException e) {
+                     e.printStackTrace();
+                 }
+
+
+                 SimpleDateFormat sdf = new SimpleDateFormat("MM-dd");
+
+                 String heartFormat = sdf.format(dt);
+
+                 entries.add(new Entry(i++, Float.parseFloat(c.getString(1)))); // 문자형을 실수로 변환 y축
+                 xVals.add(heartFormat);
+             }
+
+         }
 
         LineDataSet linedataSet = new LineDataSet(entries, "섭취량");
         linedataSet.setLineWidth(3); //라인 두께
@@ -275,6 +247,7 @@ public class Tab1Fragment extends Fragment {
         xAxis.setDrawLabels(true);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM); //x축 데이터 표시 위치
         xAxis.setLabelCount(12); //x축의 데이터를 최대 몇 개 까지 나타낼지에 대한 설정
+         if(tab_number==2){xAxis.setLabelCount(30);}
         xAxis.setTextColor(Color.rgb(118, 118, 118));
         xAxis.setSpaceMax(1f); // 오른쪽으로 얼마나 남았는가
         xAxis.setValueFormatter(new IndexAxisValueFormatter(xVals));

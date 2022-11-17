@@ -17,7 +17,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.example.babycare.R;
-
+//버튼누르면 메뉴가 나오는 프래그먼트
 public class MyDialogFragment extends DialogFragment {
     private Fragment fragment;
 
@@ -53,9 +53,6 @@ public class MyDialogFragment extends DialogFragment {
         });
         //수유
         ImageButton water = (ImageButton) view.findViewById(R.id.btn_water);
-
-
-
         water.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,7 +68,40 @@ public class MyDialogFragment extends DialogFragment {
 
             }
         });
+        //배변
+        ImageButton toilet = (ImageButton) view.findViewById(R.id.btn_toilet);
+        toilet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                Fragment_toilet dialog_tl = new Fragment_toilet();
+                dialog_tl.show(getActivity().getSupportFragmentManager(),"toilet");
+
+                if (fragment != null) {
+                    DialogFragment dialogFragment = (DialogFragment) fragment;
+                    dialogFragment.dismiss();
+                }
+
+
+            }
+        });
+        //수면
+        ImageButton sleep = (ImageButton) view.findViewById(R.id.btn_sleep);
+        sleep.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Fragment_sleep dialog_sl = new Fragment_sleep();
+                dialog_sl.show(getActivity().getSupportFragmentManager(),"sleep");
+
+                if (fragment != null) {
+                    DialogFragment dialogFragment = (DialogFragment) fragment;
+                    dialogFragment.dismiss();
+                }
+
+
+            }
+        });
         return view;
     }
     @Override

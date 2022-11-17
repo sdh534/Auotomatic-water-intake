@@ -1,12 +1,9 @@
 package com.example.babycare.Fragment;
 
 import android.app.Dialog;
-import android.content.ClipData;
 import android.content.ContentValues;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,34 +13,24 @@ import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
 
-import com.amitshekhar.DebugDB;
-import com.example.babycare.DataItem;
-import com.example.babycare.MainActivity;
+import com.example.babycare.DataItem2;
 import com.example.babycare.MySQLiteOpenHelper;
 import com.example.babycare.R;
-import com.example.babycare.mRecyclerAdapter;
+import com.example.babycare.mRecyclerAdapter2;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
-
+///메인화면 프래그먼트
 public class HomeFragment extends Fragment {
 
 
     private ImageButton btn;
     private RecyclerView recyclerView;
-    public mRecyclerAdapter mRecyclerAdapter;
+    public mRecyclerAdapter2 mRecyclerAdapter;
     private ArrayList mDataItems;
     private Dialog dialog;
 
@@ -64,7 +51,7 @@ public class HomeFragment extends Fragment {
 
         ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.home_timeline,container,false);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
-        mRecyclerAdapter = new mRecyclerAdapter();
+        mRecyclerAdapter = new mRecyclerAdapter2();
         mDataItems = new ArrayList<>();
 
 
@@ -103,13 +90,10 @@ public class HomeFragment extends Fragment {
         mRecyclerAdapter.setDataList(mDataItems);
         RecyclerView_Update();
 
-
         btn = (ImageButton) rootView.findViewById(R.id.btn_plus);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(tag, "두다다다다 버튼을 누르기 ");
-
                     MyDialogFragment dialog = new MyDialogFragment();
                     dialog.show(getActivity().getSupportFragmentManager(),"tag");
 
@@ -173,7 +157,7 @@ public class HomeFragment extends Fragment {
     void RecyclerView_Update(){
 
         Cursor c = db.query(tableName, null, null, null, null, null, null);
-        ArrayList<DataItem> mDataList = new ArrayList<>();
+        ArrayList<DataItem2> mDataList = new ArrayList<>();
         while(c.moveToNext()) {
             int _id = c.getInt(0);
             String date_db = c.getString(1);
@@ -184,9 +168,17 @@ public class HomeFragment extends Fragment {
             Log.d(tag,"_id:"+_id+",date:"+date_db
                     +",time:"+time_db+",category:"+category +",value:"+value);
 
+            if(category==1){
+                mDataItems.add(new DataItem2(date_db+" "+time_db,value+"ml",1));}
+            else if(category==2){
+                mDataItems.add(new DataItem2(date_db+" "+time_db, value,2));
+            }
+            else if(category==3){
+                mDataItems.add(new DataItem2(date_db+" "+time_db, value,3));
+            }
 
-            mDataItems.add(new DataItem(date_db+" "+time_db,value+"ml"));
         }
+
         c.close();
         mRecyclerAdapter.notifyItemInserted(mDataItems.size());
         mRecyclerAdapter.notifyDataSetChanged();
@@ -206,7 +198,7 @@ public class HomeFragment extends Fragment {
         final int position = viewHolder.getAdapterPosition();
 
 
-        ArrayList<DataItem> mDataList = mDataItems;
+        ArrayList<DataItem2> mDataList = mDataItems;
         String[] DTtime = mDataList.get (position).getData_time().split(" ");
         String time = DTtime[1];
 

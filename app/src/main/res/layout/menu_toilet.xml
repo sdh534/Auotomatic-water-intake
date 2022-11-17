@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/edit_round_black"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    >
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edit_round_white"
+        android:layout_alignParentBottom="true"
+        >
+        <!-- 타이틀바 -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <TextView
+                android:text="배변 기록"
+                android:textSize="20sp"
+                android:textColor="#2e7596"
+                android:gravity="center"
+                android:background=" #fff "
+                android:layout_width="match_parent"
+                android:layout_height="53dp" />
+        </LinearLayout>
+        <!-- //end 타이틀바 -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:layout_margin="20dp"
+            >
+            //소변
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_marginRight="30dp"
+                >
+            <ImageButton
+                android:id="@+id/btn_toilet1"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@drawable/toilet1">
+            </ImageButton>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="소변"
+                android:textSize="17sp"
+                android:layout_gravity="center"
+                ></TextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_marginRight="30dp"
+                >
+                <ImageButton
+                    android:id="@+id/btn_toilet2"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:background="@drawable/toilet2">
+                </ImageButton>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="대변"
+                    android:textSize="17sp"
+                    android:layout_gravity="center"
+                    ></TextView>
+            </LinearLayout>
+            //둘다
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+
+                >
+                <ImageButton
+                    android:id="@+id/btn_toilet3"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:background="@drawable/toilet3">
+                </ImageButton>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="둘다"
+                    android:textSize="17sp"
+                    android:layout_gravity="center"
+                    ></TextView>
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <!-- 닫기 버튼 -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:text="확인"
+                android:fontFamily="@font/welcomebold"
+                android:id="@+id/OKbutton"
+                android:textSize="20dp"
+                android:textColor="#2e7596"
+                android:gravity="center"
+                android:background="#0000"
+                android:layout_width="match_parent"
+                android:layout_height="53dp"
+                android:onClick="mOnClose"
+                />
+        </LinearLayout>
+        <!--// 닫기 버튼 -->
+    </LinearLayout>
+</RelativeLayout>

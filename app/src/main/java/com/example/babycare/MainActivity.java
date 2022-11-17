@@ -1,15 +1,12 @@
 package com.example.babycare;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
@@ -23,26 +20,19 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ImageButton;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.amitshekhar.DebugDB;
+import com.example.babycare.Fragment.Fragment_sleep;
 import com.example.babycare.Fragment.HomeFragment;
-import com.example.babycare.Fragment.SettingFragment;
 import com.example.babycare.Fragment.Tab1Fragment;
 import com.example.babycare.Fragment.Tab2Fragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -58,6 +48,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.TimeZone;
+import java.util.TooManyListenersException;
 import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity{
@@ -77,11 +68,11 @@ public class MainActivity extends AppCompatActivity{
     //TimeZone설정
     TimeZone tz;
 
-
+    private ToggleButton button_relay;
     private TextView text_data;
     private RecyclerView mRecyclerView;
-    private com.example.babycare.mRecyclerAdapter mRecyclerAdapter;
-    private ArrayList mDataItems;
+    private com.example.babycare.mRecyclerAdapter2 mRecyclerAdapter;
+    private ArrayList mDataItems2;
     private HomeFragment HomeFragment;
     private FragmentTransaction transaction;
 
@@ -151,21 +142,14 @@ public class MainActivity extends AppCompatActivity{
         //변수 id - xml 일치
         //인텐트 변수
 
-
-        mRecyclerAdapter = new mRecyclerAdapter();
-        mDataItems = new ArrayList<>();
+        button_relay = (ToggleButton)findViewById(R.id.btn_onoff);
+        mRecyclerAdapter = new mRecyclerAdapter2();
+        mDataItems2 = new ArrayList<>();
 
         recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
 
 
-//        //수동 입력 버튼
-//        btn_manualplus.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                startActivityForResult(intent,1);
-//
-//            }
-//        });
+
 
 
 
@@ -183,11 +167,6 @@ public class MainActivity extends AppCompatActivity{
             finish();
         }
 
-
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//        recyclerView.setAdapter(mRecyclerAdapter);
-//        mRecyclerAdapter.setDataList(mDataItems);
-//        RecyclerView_Update();
 
 //--------------------------------------------------------------------------------------------------------
         //블루투스 활성화
@@ -213,7 +192,24 @@ public class MainActivity extends AppCompatActivity{
 
 //--------------------------------------------------------------------------------------------------------
 
-
+        button_relay.setOnCheckedChangeListener(
+                new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        if (isChecked) {
+                            Toast.makeText(MainActivity.this, "ON", Toast.LENGTH_SHORT).show();
+                            sendData("t");
+                            button_relay.setBackgroundResource(R.drawable.power1_on);
+                            button_relay.setText("켜짐");
+                        } else {
+                            Toast.makeText(MainActivity.this, "OFF", Toast.LENGTH_SHORT).show();
+                            sendData("f");
+                            button_relay.setBackgroundResource(R.drawable.power1);
+                            button_relay.setText("꺼짐");
+                        }
+                    }
+                }
+        );
 
 
 
@@ -241,8 +237,6 @@ public class MainActivity extends AppCompatActivity{
 
     private void init() {
         btm_ly = findViewById(R.id.btm_ly);
-
-
     }
 //--------------------------------------------------------------------------------------------------------
     //클릭하면 버튼바뀜
@@ -250,6 +244,7 @@ public class MainActivity extends AppCompatActivity{
         // 하단 메뉴바
     class TabSelectedListener implements BottomNavigationView.OnItemSelectedListener{
             FragmentTransaction transaction = fragmentManager.beginTransaction();
+
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
@@ -271,14 +266,8 @@ public class MainActivity extends AppCompatActivity{
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.II_Fragment, new Tab2Fragment())
                             .commit();
-                    return true;
                 }
-                case R.id.tab_settings: {
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.II_Fragment, new SettingFragment())
-                            .commit();
-                    return true;
-                }
+
             }
 
             return false;
@@ -335,7 +324,7 @@ void update (String name, int age, String address) {
     public void RecyclerView_Update(){
 
         Cursor c = db.query(tableName, null, null, null, null, null, null);
-        ArrayList<DataItem> mDataList = new ArrayList<>();
+        ArrayList<DataItem2> mDataList = new ArrayList<>();
         while(c.moveToNext()) {
             int _id = c.getInt(0);
             String date_db = c.getString(1);
@@ -347,10 +336,10 @@ void update (String name, int age, String address) {
                     +",time:"+time_db+",category:"+category +",value:"+value);
 
 
-            mDataItems.add(new DataItem(date_db+" "+time_db,value+"ml"));
+            mDataItems2.add(new DataItem2(date_db+" "+time_db,value,category));
         }
         c.close();
-        mRecyclerAdapter.notifyItemInserted(mDataItems.size());
+        mRecyclerAdapter.notifyItemInserted(mDataItems2.size());
         mRecyclerAdapter.notifyDataSetChanged();
 
     }
@@ -480,7 +469,7 @@ void update (String name, int age, String address) {
 
                                             tz= TimeZone.getTimeZone("Asia/Seoul");
 
-                                            DateFormat SimpleDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.KOREA);
+                                            DateFormat SimpleDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
                                             SimpleDate.setTimeZone(tz);
                                             Date mDate= new Date();
                                             String getTime = SimpleDate.format(mDate);
@@ -523,7 +512,7 @@ void update (String name, int age, String address) {
         workerThread.start();
     }
 
-    void sendData(String text) {
+   public void sendData(String text) {
         //문자열에 개행 문자 추가
         text += "\n";
         try {
